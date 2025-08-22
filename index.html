@@ -13,6 +13,7 @@
 	button, input {
   touch-action: manipulation;
   font-size: 16px; /* verhindert iOS-Zoom bei <16px Eingabefeldern */
+}
     body { margin:0; background: radial-gradient(1200px 800px at 80% -10%, #14202c 0%, var(--bg) 50%);
            color: var(--text); font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif; }
     .wrap { max-width: 1150px; margin: 24px auto; padding: 16px; }
@@ -67,7 +68,7 @@
       </div>
       <div class="row">
         <div class="stat"><span class="emoji">🥚</span><span class="label">Eier</span><span class="value" id="eggs">0</span></div>
-        <div class="stat"><span class="emoji">🌾</span><span class="label">Körner</span><span class="value" id="grain">10</span></div>
+        <div class="stat"><span class="emoji">🌾</span><span class="label">Körner</span><span class="value" id="grain">20</span></div>
         <div class="stat"><span class="emoji">🐔</span><span class="label">Hühner</span><span class="value" id="chick-count">1</span></div>
       </div>
     </header>
@@ -141,7 +142,7 @@
 
   // Wir nutzen das eingebettete Bild aus Teil 2:
   const SPRITE_URL = SPRITE_DATA;
-  const SPRITE_SCALE = 0.20;            // Kopffreiheit
+  const SPRITE_SCALE = 0.18;            // Kopffreiheit
   const SAVE_KEY = "coop-interior-v3";  // eigener Speicher-Slot
 
   const $ = (s)=>document.querySelector(s);
@@ -149,7 +150,7 @@
   const fmt = (n)=> Number(n).toLocaleString("de-DE");
 
   const state = {
-    eggs: 0, grain: 10, stash: 0, tickMs: 1000,
+    eggs: 0, grain: 20, stash: 0, tickMs: 1000,
     upgrades: { nests: 0, faster: 0, stall: 0, feed: 0 },
     prices:   { grain: 5, chicken: 30, upg1: 60, upg2: 80, stall: 100, feed: 90 },
     chickens: [],
@@ -353,7 +354,7 @@
 
   function tick(){
     for(const ch of state.chickens){
-      ch.sat = Math.max(0, ch.sat - 1.5);
+      ch.sat = Math.max(0, ch.sat - 1.2);
       let base = ch.rateBase * productivity(ch) * nestsBonus();
       if(ch.sat >= 70) base *= 0.5;
       if(ch.sat <= 5) base = 0;
@@ -384,7 +385,7 @@
     const need = state.chickens.length;
     if(state.grain < need){ log('Nicht genug Körner für alle!'); play('error'); return; }
     state.grain -= need;
-    const gain = Math.round(14 * feedBonus());
+    const gain = Math.round(16 * feedBonus());
     for(const ch of state.chickens) ch.sat = Math.min(100, ch.sat + gain);
     play('cluck'); renderTop(); renderChickenList();
   }
